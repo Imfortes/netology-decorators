@@ -13,17 +13,13 @@ def logger(old_function):
 
         result = old_function(*args, **kwargs)
 
-        if not os.path.exists(file_path):
-            with open(file_path, 'w', encoding='utf-8') as file:
-                file.write(
-                    f'Дата и время вызова функции:{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - имя функции: {old_function.__name__} - аргументы функции: {args} {kwargs} - возвращает {result} \n')
-        else:
+        try:
             with open(file_path, 'a', encoding='utf-8') as file:
-                file.write(
-                    f'Дата и время вызова функции: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - имя функции: {old_function.__name__} - аргументы функции: {args} {kwargs} -  возвращает {result} \n')
-            print(f'File "{file_path}" already exists.')
+                file.write(f'Дата и время вызова функции:{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - имя функции: {old_function.__name__} - аргументы функции: {str(args)} {str(kwargs)} - возвращает {result} \n')
+        except Exception as e:
+            print(f'Ошибка {e}')
 
-        return old_function(*args, **kwargs)
+        return result
 
     return new_function
 
