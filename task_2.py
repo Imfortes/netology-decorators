@@ -2,14 +2,19 @@
 # и возвращаемое значение. Путь к файлу должен передаваться в аргументах декоратора. Функция test_2 в коде ниже также должна отработать без ошибок.
 
 import os
+from datetime import datetime
 
 
 def logger(path):
-    ...
-
     def __logger(old_function):
         def new_function(*args, **kwargs):
-            ...
+
+            result = old_function(*args, **kwargs)
+
+            with open(path, 'a', encoding='utf-8') as log_file:
+                log_file.write(f'Дата и время вызова функции:{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n - имя функции: {old_function.__name__}\n - аргументы функции: {str(args)} {str(kwargs)}\n - возвращает {result} \n')
+
+            return result
 
         return new_function
 
